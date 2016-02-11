@@ -12,6 +12,7 @@
         <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link href="http://fonts.googleapis.com/css?family=Lato:400,300" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="css/watable.css">
         <link rel="stylesheet" href="css/seint.css">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -59,29 +60,108 @@
 
                 </div>
             </nav>
-            <div class="col-md-3">&nbsp;</div>
-            <div class="col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Ingrese su número de cédula</h3>
+            <div class="row filaUsuarios">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ingrese su número de cédula</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form id="ingresaCedula">
+                                <div class="form-group">
+                                    <label for="numCedula">Sin puntos o espacios en blanco</label>
+                                    <input type="number" class="form-control" id="numCedula" placeholder="Número de cédula">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="numCedula">Número de cédula (sin puntos o espacios en blanco)</label>
-                                <input type="number" class="form-control" id="numCedula" placeholder="Número de cédula">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
-                        </form>
+                </div>
+                <div class="col-md-8">
+                    <div class="alert alert-danger noResultados" role="alert">Su número de cédula no aparece en nuestros registros. Intente de nuevo.</div>
+                    <div class="panel panel-primary resultadoCursos">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Cursos registrados</h3>
+                        </div>
+                        <div class="panel-body">
+                            <h3 id="nombreUsuario"></h3>
+                            <h3 id="cedulaUsuario"></h3>
+                            <table id="tablaCursos" class="table table-bordered">
+                                <thead>
+                                    <th>Número de serie</th>
+                                    <th>Curso</th>
+                                    <th>Fecha</th>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">&nbsp;</div>
+            <div class="row filaAdmin">
+                <div class="col-md-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">Usuarios</h3>
+                            <button id="nuevoUsuario" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="tablaUsuarios"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">Cursos</h3>
+                            <button id="nuevoCurso" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="tablaCurs"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row.filaAdmin -->
+            <div class="row filaAdmin">
+                <div class="col-xs-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">Registros</h3>
+                            <button id="nuevoRegistro" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="tablaRegistros"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row.filaAdmin -->
         </div>
-
+        <!-- Ventana Modal -->
+        <div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModalLabel">
+            <div class="modal-dialog" role="form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="guardarRegistro" type="button" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="js/jquery.watable.js"></script>
+        <script src="js/seint.js"></script>
     </body>
 </html>

@@ -1,0 +1,8 @@
+Usuario base de datos:
+
+Usuario: eb000384_cursos
+Contraseña: S31nTS4S
+
+Base de datos:
+
+eb000384_cursos
