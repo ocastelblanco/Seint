@@ -1,6 +1,11 @@
 <?php
 require('inc.php');
 header('Content-Type: application/json');
+if (count($_GET) == 0) {
+    $tabla = "";
+} else {
+    $tabla = $_GET['tabla'];
+}
 $cursos = array();
 $mysqli = new mysqli($SERVIDOR, $USUARIO, $CLAVE, $DB);
 if ($mysqli->connect_errno) {
@@ -12,7 +17,7 @@ if (!$mysqli->set_charset("utf8")) {
     exit();
 }
 // Si se pidió una tabla de usuarios
-if ($_GET['tabla'] == 'usuarios') {
+if ($tabla == 'usuarios') {
     $usuarios = array();
     if ($resultUsers = $mysqli->query("SELECT * FROM $TABLA_USUARIOS")) {
         while ($linea = $resultUsers->fetch_row()) {
@@ -33,7 +38,7 @@ if ($_GET['tabla'] == 'usuarios') {
         'Empresa'=>array('index'=>4,'type'=>'string'),
         'Fecha de registro'=>array('index'=>5,'type'=>'date')
     ),'rows'=>$usuarios);
-} elseif ($_GET['tabla'] == 'cursos') {
+} elseif ($tabla == 'cursos') {
     $cursos = array();
     if ($resultCursos = $mysqli->query("SELECT * FROM $TABLA_CURSOS")) {
         while ($fila = $resultCursos->fetch_row()) {
@@ -93,7 +98,7 @@ if ($_GET['tabla'] == 'usuarios') {
         'Consecutivo'=>array('index'=>5,'type'=>'string'),
         'Examen'=>array('index'=>6,'type'=>'string'),
         'Nombre'=>array('index'=>7,'type'=>'string'),
-        'Cédula'=>array('index'=>8,'type'=>'nmber'),
+        'Cédula'=>array('index'=>8,'type'=>'number'),
         'Empresa'=>array('index'=>9,'type'=>'string'),
         'Curso'=>array('index'=>10,'type'=>'string'),
         'Fecha'=>array('index'=>11,'type'=>'date'),

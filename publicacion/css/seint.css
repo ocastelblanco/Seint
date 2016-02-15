@@ -19,11 +19,14 @@
 #tablaCurs {
     overflow: scroll;
 }
-.panel-heading h3 {
+.filaAdmin .panel-heading h3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: normal;
     width: 60%;
     padding-top: 8px;
+}
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 100%;
 }

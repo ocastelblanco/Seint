@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link href="http://fonts.googleapis.com/css?family=Lato:400,300" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="css/watable.css">
+        <link rel="stylesheet" href="css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="css/seint.css">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -103,24 +105,36 @@
                 <div class="col-md-8">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title pull-left">Usuarios</h3>
+                            <h3 class="panel-title pull-left">
+                                <a id="colapsaUsuarios" role="button" data-toggle="collapse" href="#cuerpoUsuarios" aria-expanded="true" aria-controls="cuerpoUsuarios">
+                                    <i class="fa fa-caret-right"></i> Usuarios
+                                </a>
+                            </h3>
                             <button id="nuevoUsuario" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="panel-body">
-                            <div id="tablaUsuarios"></div>
+                        <div id="cuerpoUsuarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div id="tablaUsuarios"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title pull-left">Cursos</h3>
+                            <h3 class="panel-title pull-left">
+                                <a id="colapsaCursos" role="button" data-toggle="collapse" href="#cuerpoCursos" aria-expanded="true" aria-controls="cuerpoCursos">
+                                    <i class="fa fa-caret-right"></i> Cursos
+                                </a>
+                            </h3>
                             <button id="nuevoCurso" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="panel-body">
-                            <div id="tablaCurs"></div>
+                        <div id="cuerpoCursos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div id="cuerpoCursos" class="panel-body">
+                                <div id="tablaCurs"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,8 +174,11 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/moment-with-locales.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="js/bootstrap-datetimepicker.min.js"></script>
         <script src="js/jquery.watable.js"></script>
+        <script src="js/bootstrap-select.min.js"></script>
         <script src="js/seint.js"></script>
     </body>
 </html>
