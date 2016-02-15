@@ -106,13 +106,13 @@ $(function(){
             $('#ventanaModal .modal-body').html(contenido);
             $('.selectpicker').selectpicker('show');
             $('#ventanaModal').modal();
-            $('#fechaExp').datetimepicker({
-                locale: 'es'
-            });
             guardarRegistro(contenido, $('#ventanaModal form .form-control'));
         });
     });
     function guardarRegistro(contenido, formulario) {
+        $('#fechaExp').datetimepicker({
+            locale: 'es'
+        });
         $('#ventanaModal #guardarRegistro').click(function(e){
             $(this).unbind();
             e.preventDefault();
@@ -122,9 +122,8 @@ $(function(){
                     data[$(this).attr('id')] = $(this).val();
                 }
             });
-            console.log(data);
-            /*
             $.getJSON('php/save.php', data, function(datos){
+            console.log(datos);
                 $('#ventanaModal .modal-body').html(datos.mensaje);
                 if (datos.resultado) {
                     iniciaListaAdmin();
@@ -142,14 +141,15 @@ $(function(){
                     });
                 }
             });
-            */
         });
     }
     function iniciarContenido(contenido, data){
         $('#ventanaModal .modal-body').html(contenido);
-        $('#ventanaModal .modal-body #nombreCurso').val(data.nombre);
+        for (var indice in data) {
+            $('#ventanaModal .modal-body form #'+indice).val(data[indice]);
+        }
         $('#ventanaModal #guardarRegistro').html('Guardar cambios');
-        guardarRegistro(contenido);
+        guardarRegistro(contenido, $('#ventanaModal form .form-control'));
     }
     // ---------------------------------------------> Ingreso de cédula por usuario normal
     $('#formLogin').on('submit', function(e){

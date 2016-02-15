@@ -17,6 +17,15 @@ if (array_key_exists('cedula',$_GET)) {
     $llaveInsertar = "`NombreCurso`,";
     $valorInsertar = "'".$_GET['nombre']."',";
     $tabla = $TABLA_CURSOS;
+} else {
+    $palabra = "registro";
+    $llaveBuscar = "Consecutivo";
+    $valorBuscar = $_GET['consecutivo'];
+    $msgError = "El registro con el consecutivo $valorBuscar ya ha sido registrado anteriormente.";
+    $llaveInsertar = "`CodigoCarta`, `NumCert`, `Factura`, `Consecutivo`, `ServExamen`, `FechaExp`, `EjecutivoCuenta`, `CodUsuario`, `CodCurso`,";
+    $fechaExp = substr($_GET['fechaExp'],6,4)."-".substr($_GET['fechaExp'],3,2)."-".substr($_GET['fechaExp'],0,2);
+    $valorInsertar = "'".$_GET['codigoCarta']."', '".$_GET['qr']."', '".$_GET['factura']."', '".$_GET['consecutivo']."', '".$_GET['examen']."', '$fechaExp', '".$_GET['ejecutivoCuenta']."', '".$_GET['idUsuario']."', '".$_GET['idCurso']."',";
+    $tabla = $TABLA_REGISTRO;
 }
 $mysqli = new mysqli($SERVIDOR, $USUARIO, $CLAVE, $DB);
 if ($mysqli->connect_errno) {
@@ -34,7 +43,7 @@ if ($result = $mysqli->query($query)) {
     } else {
         $query = "INSERT INTO `$tabla` (`id`, $llaveInsertar `FechaReg`) VALUES (NULL, $valorInsertar CURRENT_DATE());";
         if (!$mysqli->query($query)) {
-            $salida = array("resultado"=>false, "mensaje"=>"Error al guardar el $palabra. Revise los datos e intente de nuevo.");
+            $salida = array("resultado"=>false, "mensaje"=>"Error al guardar el $palabra. Revise los datos e intente de nuevo. ".$query);
         } else {
             $salida = array("resultado"=>true, "mensaje"=>"El $palabra ha sido guardado con éxito.<br><br>¿Desea ingresar un nuevo $palabra?");
         }
