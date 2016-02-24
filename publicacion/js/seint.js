@@ -1,7 +1,18 @@
 $(function(){
+    $('body').show();
     $('.resultadoCursos').hide();
     $('.noResultados').hide();
     $('.filaAdmin').hide();
+    $('#formLogin').hide();
+    activarAccionLogin();
+    function activarAccionLogin() {
+        $('#accionLogin').click(function(e){
+            e.preventDefault();
+            $(this).unbind();
+            $('#formLogin').show(500);
+            $(this).hide(500);
+        });
+    }
     //---------------------> Registro de cursos nuevos
     $('#nuevoCurso').click(function(e){
         e.preventDefault();
@@ -9,6 +20,7 @@ $(function(){
         var contenido = '<form class="form-horizontal"><div class="form-group"><label for="nombreCurso" class="col-sm-2 control-label">Nombre del curso</label><div class="col-sm-10"><input type="text" class="form-control" id="nombreCurso" placeholder="Nombre del curso"></div></div></form>';
         $('#ventanaModal .modal-title').html('Registrar un nuevo curso');
         $('#ventanaModal .modal-body').html(contenido);
+        $('#ventanaModal #guardarRegistro').show();
         $('#ventanaModal').modal();
         guardarRegistroCurso(contenido);
     });
@@ -17,6 +29,7 @@ $(function(){
             $(this).unbind();
             e.preventDefault();
             var data = {'nombre': $('#ventanaModal .modal-body #nombreCurso').val()};
+            console.log(data);
             $.getJSON('php/save.php', data, function(datos){
                 $('#ventanaModal .modal-body').html(datos.mensaje);
                 if (datos.resultado) {
@@ -50,6 +63,7 @@ $(function(){
         var contenido = '<form class="form-horizontal"><div class="form-group"><label for="nombreUsuario" class="col-sm-2 control-label">Nombre</label><div class="col-sm-10"><input type="text" class="form-control" id="nombreUsuario" placeholder="Nombres y apellidos"></div></div><div class="form-group"><label for="cedulaUsuario" class="col-sm-2 control-label">Cédula</label><div class="col-sm-10"><input type="number" class="form-control" id="cedulaUsuario" placeholder="Cédula"></div></div> <div class="form-group"><label for="empresaUsuario" class="col-sm-2 control-label">Empresa</label><div class="col-sm-10"><input type="text" class="form-control" id="empresaUsuario" placeholder="Empresa"></div></div></form>';
         $('#ventanaModal .modal-title').html('Registrar un nuevo usuario');
         $('#ventanaModal .modal-body').html(contenido);
+        $('#ventanaModal #guardarRegistro').show();
         $('#ventanaModal').modal();
         guardarRegistroUsuario(contenido);
     });
@@ -105,6 +119,7 @@ $(function(){
             $('#ventanaModal .modal-title').html('Crear un nuevo registro');
             $('#ventanaModal .modal-body').html(contenido);
             $('.selectpicker').selectpicker('show');
+            $('#ventanaModal #guardarRegistro').show();
             $('#ventanaModal').modal();
             guardarRegistro(contenido, $('#ventanaModal form .form-control'));
         });
@@ -154,9 +169,9 @@ $(function(){
     // ---------------------------------------------> Ingreso de cédula por usuario normal
     $('#formLogin').on('submit', function(e){
         e.preventDefault();
-        $('#menuLogin').dropdown('toggle');
         var usuario = $('#formLogin #admin').val();
         var clave = $('#formLogin #claveAdmin').val();
+        //$('#formLogin').reset();
         $.getJSON('php/md5.php?usuario='+usuario+'&clave='+clave, function(datos){
             // usuario: admin
             // clave: S31nt!
@@ -165,9 +180,28 @@ $(function(){
                 $('.filaAdmin').show();
                 $('.filaUsuarios').hide();
                 iniciaListaAdmin();
+                $('#formLogin').hide(500);
+                $('#accionLogin').html('<i class="fa fa-sign-out"></i> Salir');
+                $('#accionLogin').show();
+                $('#accionLogin').click(function(e){
+                    e.preventDefault();
+                    $(this).unbind();
+                    $(this).html('<i class="fa fa-sign-in"></i> Ingresar');
+                    limpiarAdmin();
+                    activarAccionLogin();
+                });
+            } else {
+                activarAccionLogin();
             }
         });
     });
+    function limpiarAdmin() {
+        $('#tablaRegistros').html('');
+        $('#tablaUsuarios').html('');
+        $('#tablaCurs').html('');
+        $('.filaAdmin').hide();
+        $('.filaUsuarios').show();
+    }
     $('#ingresaCedula').on('submit', function(e){
         $('.resultadoCursos').hide();
         e.preventDefault();
@@ -193,10 +227,94 @@ $(function(){
     function iniciaListaAdmin() {
         // Carga la tabla de listado general de registros de curso
         $.getJSON('php/lista.php', function(datos){
+            console.log(datos);
             $('#tablaRegistros').html('');
             $('#tablaRegistros').WATable({
                 columnPicker: true,
                 data: datos
+            });
+            $('#tablaRegistros a.ediReg').click(function(e){
+                var editando = $(this);
+                //$(this).unbind();
+                e.preventDefault();
+                $.getJSON('php/uscur.php', function(datos){
+                    var id = $(editando).attr('id');
+                    var fila = $(editando).parent().parent();
+                    var codCarta = $(fila).children('td:nth-child(3)').html();
+                    var numQR = $(fila).children('td:nth-child(4)').html();
+                    var factura = $(fila).children('td:nth-child(5)').html();
+                    var consecutivo = $(fila).children('td:nth-child(6)').html();
+                    var examen = $(fila).children('td:nth-child(7)').html();
+                    var actualCedula = $(fila).children('td:nth-child(9)').html();
+                    var actualCurso = $(fila).children('td:nth-child(11)').html();
+                    var fecha = $(fila).children('td:nth-child(12)').html();
+                    var fechaReg = fecha.substr(-2)+'-'+fecha.substr(5, 2)+'_'+fecha.substr(0, 4);
+                    var ejecutivo = $(fila).children('td:nth-child(13)').html();
+                    var selectUsuarios = '', selectCursos = '';
+                    datos.usuarios.forEach(function(elem, index, array){
+                        var seleccionado = '';
+                        if (elem.cedula == actualCedula){
+                            seleccionado = ' selected';
+                        }
+                        selectUsuarios += '<option value="'+elem.id+'"'+seleccionado+'>'+elem.cedula+' '+elem.nombre+'</option>';
+                    });
+                    datos.cursos.forEach(function(elem, index, array){
+                        var seleccionado = '';
+                        if (elem.cedula == actualCurso){
+                            seleccionado = ' selected';
+                        }
+                        selectCursos += '<option value="'+elem.id+'"'+seleccionado+'>'+elem.curso+'</option>';
+                    });
+                    var contenido = '<form class="form-horizontal"><div class="form-group"><label for="codigoCarta" class="col-sm-4 control-label">Código de carta</label><div class="col-sm-8"><input type="text" class="form-control" id="codigoCarta" placeholder="Código de carta" value="'+codCarta+'"></div></div><div class="form-group"><label for="qr" class="col-sm-4 control-label">Número de serie consecutivo QR</label><div class="col-sm-8"><input type="text" class="form-control" id="qr" placeholder="Número de serie consecutivo QR" value="'+numQR+'"></div></div><div class="form-group"><label for="factura" class="col-sm-4 control-label">Factura</label><div class="col-sm-8"><input type="text" class="form-control" id="factura" placeholder="Factura" value="'+factura+'"></div></div><div class="form-group"><label for="consecutivo" class="col-sm-4 control-label">Consecutivo operaciones</label><div class="col-sm-8"><input type="text" class="form-control" id="consecutivo" placeholder="Consecutivo operaciones" value="'+consecutivo+'"></div></div><div class="form-group"><label for="examen" class="col-sm-4 control-label">Servicio de examen</label><div class="col-sm-8"><input type="text" class="form-control" id="examen" placeholder="Servicio de examen" value="'+examen+'"></div></div>';
+                    contenido += '<div class="form-group"><label for="idUsuario" class="col-sm-4 control-label">Usuario</label><div class="col-sm-8"><select class="form-control selectpicker" id="idUsuario" data-live-search="true">'+selectUsuarios+'</select></div></div>';
+                    contenido += '<div class="form-group"><label for="idCurso" class="col-sm-4 control-label">Curso</label><div class="col-sm-8"><select class="form-control selectpicker" id="idCurso" data-live-search="true">'+selectCursos+'</select></div></div>';
+                    contenido += '<div class="form-group"><label for="fechaExp" class="col-sm-4 control-label">Fecha de expedición</label><div class="col-sm-8"><input type="text" class="form-control" id="fechaExp" placeholder="Fecha de expedición" value="'+fechaReg+'"></div></div><div class="form-group"><label for="ejecutivoCuenta" class="col-sm-4 control-label">Ejecutivo de cuenta</label><div class="col-sm-8"><input type="text" class="form-control" id="ejecutivoCuenta" placeholder="Ejecutivo de cuenta" value="'+ejecutivo+'"></div></div></form><a href="#" id="preliminarReg" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar el curso</a>';
+                    $('#ventanaModal .modal-title').html('Editar un curso');
+                    $('#ventanaModal .modal-body').html(contenido);
+                    $('#ventanaModal #guardarRegistro').show();
+                    $('.selectpicker').selectpicker('show');
+                    $('#ventanaModal').modal();
+                    $('#fechaExp').datetimepicker({
+                        locale: 'es'
+                    });
+                    $('#ventanaModal #guardarRegistro').click(function(e){
+                        $(this).unbind();
+                        e.preventDefault();
+                        var data = {};
+                        $('#ventanaModal form .form-control').each(function(){
+                            if($(this).attr('id') !== undefined) {
+                                data[$(this).attr('id')] = $(this).val();
+                            }
+                        });
+                        data.accion = 'editar';
+                        data.tabla = 'registros';
+                        data.id = id;
+                        $.getJSON('php/editar.php', data, function(datos){
+                            $('#ventanaModal .modal-body').html(datos.mensaje);
+                            if (datos.resultado) {
+                                iniciaListaAdmin();
+                                $('#ventanaModal #guardarRegistro').hide();
+                            }
+                        });
+                    });
+                    $('#ventanaModal #preliminarReg').click(function(e){
+                        $(this).unbind();
+                        e.preventDefault();
+                        $('#ventanaModal .modal-body').html('¿Seguro que quiere eliminar el registro '+consecutivo+'?<br><a href="#" id="eliminarReg" class="btn btn-danger btn-block"><i class="fa fa-trash"></i> Eliminar el registro</a>');
+                        $('#ventanaModal #guardarRegistro').hide();
+                        $('#ventanaModal #eliminarReg').click(function(e){
+                            $(this).unbind();
+                            e.preventDefault();
+                            var data = {'id': id, 'accion': 'eliminar', 'tabla': 'registros'};
+                            $.getJSON('php/editar.php', data, function(datos){
+                                $('#ventanaModal .modal-body').html(datos.mensaje);
+                                if (datos.resultado) {
+                                    iniciaListaAdmin();
+                                }
+                            });
+                        });
+                    });
+                });
             });
         });
         // Carga la tabla de listado general de usuarios
@@ -205,12 +323,97 @@ $(function(){
             $('#tablaUsuarios').WATable({
                 data: datos
             });
+            $('#tablaUsuarios a.ediReg').click(function(e){
+                //$(this).unbind();
+                e.preventDefault();
+                var id = $(this).attr('id');
+                var fila = $(this).parent().parent();
+                var nombre = $(fila).children('td:nth-child(3)').html();
+                var cedula = $(fila).children('td:nth-child(4)').html();
+                var empresa = $(fila).children('td:nth-child(5)').html();
+                var contenido = '<form class="form-horizontal"><div class="form-group"><label for="nombreUsuario" class="col-sm-2 control-label">Nombre</label><div class="col-sm-10"><input type="text" class="form-control" id="nombreUsuario" placeholder="Nombres y apellidos" value="'+nombre+'"></div></div><div class="form-group"><label for="cedulaUsuario" class="col-sm-2 control-label">Cédula</label><div class="col-sm-10"><input type="number" class="form-control" id="cedulaUsuario" placeholder="Cédula" value="'+cedula+'"></div></div> <div class="form-group"><label for="empresaUsuario" class="col-sm-2 control-label">Empresa</label><div class="col-sm-10"><input type="text" class="form-control" id="empresaUsuario" placeholder="Empresa" value="'+empresa+'"></div></div></form><a href="#" id="preliminarReg" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar el usuario</a>';
+                $('#ventanaModal .modal-title').html('Editar un usuario');
+                $('#ventanaModal .modal-body').html(contenido);
+                $('#ventanaModal #guardarRegistro').show();
+                $('#ventanaModal').modal();
+                $('#ventanaModal #guardarRegistro').click(function(e){
+                    $(this).unbind();
+                    e.preventDefault();
+                    var data = {'id': id, 'nombre': $('#ventanaModal .modal-body #nombreUsuario').val(), 'cedula': $('#ventanaModal .modal-body #cedulaUsuario').val(), 'empresa': $('#ventanaModal .modal-body #empresaUsuario').val(), 'accion': 'editar', 'tabla': 'usuarios'};
+                    $.getJSON('php/editar.php', data, function(datos){
+                        $('#ventanaModal .modal-body').html(datos.mensaje);
+                        if (datos.resultado) {
+                            iniciaListaAdmin();
+                            $('#ventanaModal #guardarRegistro').hide();
+                        }
+                    });
+                });
+                $('#ventanaModal #preliminarReg').click(function(e){
+                    $(this).unbind();
+                    e.preventDefault();
+                    $('#ventanaModal .modal-body').html('¿Seguro que quiere eliminar al usuario con la cédula '+$('#ventanaModal .modal-body #cedulaUsuario').val()+'?<br><a href="#" id="eliminarReg" class="btn btn-danger btn-block"><i class="fa fa-trash"></i> Eliminar el usuario</a>');
+                    $('#ventanaModal #guardarRegistro').hide();
+                    $('#ventanaModal #eliminarReg').click(function(e){
+                        $(this).unbind();
+                        e.preventDefault();
+                        var data = {'id': id, 'accion': 'eliminar', 'tabla': 'usuarios'};
+                        $('#ventanaModal #guardarRegistro').removeClass('disabled');
+                        $.getJSON('php/editar.php', data, function(datos){
+                            $('#ventanaModal .modal-body').html(datos.mensaje);
+                            if (datos.resultado) {
+                                iniciaListaAdmin();
+                            }
+                        });
+                    });
+                });
+            });
         });
         // Carga la tabla de listado general de cursos
         $.getJSON('php/lista.php?tabla=cursos', function(datos){
             $('#tablaCurs').html('');
             $('#tablaCurs').WATable({
                 data: datos
+            });
+            $('#tablaCurs a.ediReg').click(function(e){
+                //$(this).unbind();
+                e.preventDefault();
+                var id = $(this).attr('id');
+                var fila = $(this).parent().parent();
+                var nombre = $(fila).children('td:nth-child(3)').html();
+                var contenido = '<form class="form-horizontal"><div class="form-group"><label for="nombreCurso" class="col-sm-2 control-label">Nombre del curso</label><div class="col-sm-10"><input type="text" class="form-control" id="nombreCurso" placeholder="Nombre del curso" value="'+nombre+'"></div></div></form><a href="#" id="preliminarReg" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar el curso</a>';
+                $('#ventanaModal .modal-title').html('Editar un curso');
+                $('#ventanaModal .modal-body').html(contenido);
+                $('#ventanaModal #guardarRegistro').show();
+                $('#ventanaModal').modal();
+                $('#ventanaModal #guardarRegistro').click(function(e){
+                    $(this).unbind();
+                    e.preventDefault();
+                    var data = {'id': id, 'nombre': $('#ventanaModal .modal-body #nombreCurso').val(), 'accion': 'editar', 'tabla': 'cursos'};
+                    $.getJSON('php/editar.php', data, function(datos){
+                        $('#ventanaModal .modal-body').html(datos.mensaje);
+                        if (datos.resultado) {
+                            iniciaListaAdmin();
+                            $('#ventanaModal #guardarRegistro').hide();
+                        }
+                    });
+                });
+                $('#ventanaModal #preliminarReg').click(function(e){
+                    $(this).unbind();
+                    e.preventDefault();
+                    $('#ventanaModal .modal-body').html('¿Seguro que quiere eliminar el curso '+nombre+'?<br><a href="#" id="eliminarReg" class="btn btn-danger btn-block"><i class="fa fa-trash"></i> Eliminar el curso</a>');
+                    $('#ventanaModal #guardarRegistro').hide();
+                    $('#ventanaModal #eliminarReg').click(function(e){
+                        $(this).unbind();
+                        e.preventDefault();
+                        var data = {'id': id, 'accion': 'eliminar', 'tabla': 'cursos'};
+                        $.getJSON('php/editar.php', data, function(datos){
+                            $('#ventanaModal .modal-body').html(datos.mensaje);
+                            if (datos.resultado) {
+                                iniciaListaAdmin();
+                            }
+                        });
+                    });
+                });
             });
         });
     }
@@ -226,4 +429,12 @@ $(function(){
     $('#cuerpoCursos').on('hide.bs.collapse', function () {
         $('#colapsaCursos i').removeClass('fa-caret-down').addClass('fa-caret-right');
     });
+    $('#ventanaModal').on('hide.bs.modal', function (e) {
+        $('#tablaRegistros').html('');
+        $('#tablaCurs').html('');
+        $('#tablaUsuarios').html('');
+        iniciaListaAdmin();
+        var timer = window.setTimeout(iniciaListaAdmin, 2000);
+    });
+    //var timer = window.setInterval(iniciaListaAdmin, 2000);
 });

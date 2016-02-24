@@ -9,12 +9,8 @@
 
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"-->
+        <link rel="stylesheet" href="css/flat-ui.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!--link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap-material-design.min.css">
-        <link rel="stylesheet" type="text/css" href="css/ripples.min.css"-->
         <link rel="stylesheet" href="css/watable.css">
         <link rel="stylesheet" href="css/bootstrap-select.min.css">
         <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
@@ -27,7 +23,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="display:none;">
         <div class="container">
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
@@ -42,25 +38,20 @@
                     </div>
                     <div class="collapse navbar-collapse" id="barra-colapsible">
                         <p class="navbar-text navbar-left">Sistema de seguimiento de cursos</p>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown" id="menuLogin">
-                                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin"><i class="fa fa-cog"></i> Administración <i class="fa fa-caret-down"></i></a>
-                                <div class="dropdown-menu formDrop">
-                                    <form class="form-horizontal" id="formLogin" action="admin.php" method="post">
-                                        <li class="dropdown-header">Ingrese sus datos</li>
-                                        <div class="form-group">
-                                            <input name="admin" id="admin" type="text" class="form-control" placeholder="Usuario">
-                                        </div>
-                                        <div class="form-group">
-                                            <input name="claveAdmin" id="claveAdmin" type="password" class="form-control col-xs-11" placeholder="Contraseña">
-                                        </div>
-										<div class="form-group">
-											 <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-										</div>
-                                    </form>
-                                </div>
-                            </li>
-                        </ul>
+                        <a class="btn btn-success navbar-btn navbar-right" id="accionLogin" href="#">
+                            <i class="fa fa-sign-in"></i> Ingreso
+                        </a>
+                        <form class="navbar-form navbar-right" id="formLogin" action="admin.php" method="post" role="log">
+                            <div class="form-group">
+                                <input name="admin" id="admin" type="text" class="form-control" placeholder="Usuario">
+                            </div>
+                            <div class="form-group">
+                                <input name="claveAdmin" id="claveAdmin" type="password" class="form-control col-xs-11" placeholder="Contraseña">
+                            </div>
+                            <div class="form-group">
+                                 <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
@@ -179,11 +170,10 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/moment-with-locales.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <!--script src="js/material.min.js"></script>
-        <script src="js/ripples.min.js"></script-->
         <script src="js/bootstrap-datetimepicker.min.js"></script>
         <script src="js/jquery.watable.js"></script>
         <script src="js/bootstrap-select.min.js"></script>
+        <script src="js/flat-ui.js"></script>
         <script src="js/seint.js"></script>
     </body>
 </html>

@@ -41,9 +41,9 @@ if ($result = $mysqli->query($query)) {
     if($result->num_rows) {
         $salida = array("resultado"=>false, "mensaje"=>"$msgError Por favor, verifique los datos.");
     } else {
-        $query = "INSERT INTO `$tabla` (`id`, $llaveInsertar `FechaReg`) VALUES (NULL, $valorInsertar CURRENT_DATE());";
+        $query = "INSERT INTO `$tabla` (`id`, $llaveInsertar `FechaReg`, `activo`) VALUES (NULL, $valorInsertar CURRENT_DATE(), '1');";
         if (!$mysqli->query($query)) {
-            $salida = array("resultado"=>false, "mensaje"=>"Error al guardar el $palabra. Revise los datos e intente de nuevo. ".$query);
+            $salida = array("resultado"=>false, "mensaje"=>"Error al guardar el $palabra. Revise los datos e intente de nuevo.");
         } else {
             $salida = array("resultado"=>true, "mensaje"=>"El $palabra ha sido guardado con éxito.<br><br>¿Desea ingresar un nuevo $palabra?");
         }
