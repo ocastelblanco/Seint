@@ -1,0 +1,17 @@
+INSERT INTO `listadocursos` (`id`, `NombreCurso`, `FechaReg`, `activo`) VALUES
+(1, 'Trabajo seguro en alturas RE-E', CURRENT_DATE(),1),
+(2, 'Trabajo seguro en alturas AV', CURRENT_DATE(),1),
+(3, 'Trabajo seguro en alturas BA', CURRENT_DATE(),1),
+(4, 'Trabajo seguro en alturas BO', CURRENT_DATE(),1),
+(5, 'Coordinador para Trabajo seguro en alturas', CURRENT_DATE(),1),
+(6, 'Manejo preventivo de montacargas', CURRENT_DATE(),1),
+(7, 'Manejo preventivo de sustancias peligrosas', CURRENT_DATE(),1),
+(8, 'Manejo defensivo', CURRENT_DATE(),1),
+(9, 'Espacios confinados', CURRENT_DATE(),1),
+(10, 'Trabajo en caliente', CURRENT_DATE(),1),
+(11, 'Rescate vertical Nivel 1', CURRENT_DATE(),1),
+(12, 'Andamieros', CURRENT_DATE(),1),
+(13, 'Primeros auxilios y brigadas de emergencia', CURRENT_DATE(),1),
+(14, 'Nudos y anclajes', CURRENT_DATE(),1),
+(15, 'Brigadas de emergencia', CURRENT_DATE(),1),
+(16, 'Riesgo eléctrico', CURRENT_DATE(),1);

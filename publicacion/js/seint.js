@@ -192,6 +192,7 @@ $(function(){
             $('#ventanaModal .modal-body form #'+indice).val(data[indice]);
         }
         $('#ventanaModal #guardarRegistro').html('Guardar cambios');
+        $('#ventanaModal #guardarRegistro').show();
         guardarRegistro(contenido, $('#ventanaModal form .form-control'));
     }
     // ---------------------------------------------> Ingreso de cédula por usuario normal
@@ -222,6 +223,7 @@ $(function(){
         $('#tablaCurs').html('');
         $('#tablaRegistros').html('');
         $('#tablaUsuarios').html('');
+        preloaders();
         // Carga la tabla de listado general de registros de curso
         tablaRegistros = $('#tablaRegistros').WATable({
             url: 'php/lista.php',
@@ -232,6 +234,7 @@ $(function(){
             pageSize: 100,
             tableCreated: function(data){
                 $('#tablaRegistros tbody tr').css('cursor', 'pointer');
+                $('#panelRegistros').oLoader('hide');
             }
         }).data('WATable');
         // Carga la tabla de listado general de usuarios
@@ -244,6 +247,7 @@ $(function(){
             pageSize: 100,
             tableCreated: function(data){
                 $('#tablaUsuarios tbody tr').css('cursor', 'pointer');
+                $('#panelUsuarios').oLoader('hide');
             }
         }).data('WATable');
         // Carga la tabla de listado general de cursos
@@ -256,6 +260,7 @@ $(function(){
             pageSize: 10,
             tableCreated: function(data){
                 $('#tablaCurs tbody tr').css('cursor', 'pointer');
+                $('#panelCursos').oLoader('hide');
             }
         }).data('WATable');
         function activaEdicionTablaRegistros(objeto) {
@@ -270,7 +275,10 @@ $(function(){
                 var actualCedula = $(fila).children('td:nth-child(8)').html();
                 var actualCurso = $(fila).children('td:nth-child(10)').html();
                 var fecha = $(fila).children('td:nth-child(11)').html();
-                var fechaReg = fecha.substr(-2)+'-'+fecha.substr(5, 2)+'_'+fecha.substr(0, 4);
+                var fechaReg = fecha;
+                if (fecha.indexOf(" ") < 0) {
+                    fechaReg = fecha.substr(-2)+'-'+fecha.substr(5, 2)+'_'+fecha.substr(0, 4);
+                }
                 var ejecutivo = $(fila).children('td:nth-child(12)').html();
                 var selectUsuarios = '', selectCursos = '';
                 datos.usuarios.forEach(function(elem, index, array){
@@ -296,9 +304,11 @@ $(function(){
                 $('#ventanaModal #guardarRegistro').show();
                 $('.selectpicker').selectpicker('show');
                 $('#ventanaModal').modal();
-                $('#fechaExp').datetimepicker({
-                    locale: 'es'
-                });
+                if (fecha.indexOf(" ") < 0) {
+                    $('#fechaExp').datetimepicker({
+                        locale: 'es'
+                    });
+                }
                 $('#ventanaModal #guardarRegistro').click(function(e){
                     $(this).unbind();
                     e.preventDefault();
@@ -433,9 +443,25 @@ $(function(){
         $('.filaUsuarios').show();
     }
     function actualizaTablas() {
-        tablaCurs.update(function(e){}, true);
-        tablaUsuarios.update(function(e){}, true);
-        tablaRegistros.update(function(e){}, true);
+        preloaders();
+        tablaCurs.update(function(e){
+            $('#panelCursos').oLoader('hide');
+        }, true);
+        tablaUsuarios.update(function(e){
+            $('#panelUsuarios').oLoader('hide');
+        }, true);
+        tablaRegistros.update(function(e){
+            $('#panelRegistros').oLoader('hide');
+        }, true);
+    }
+    function preloaders() {
+        var opciones = {
+            image: 'images/ownageLoader/loader1.gif',
+            style: 0
+        };
+        $('#panelCursos').oLoader(opciones);
+        $('#panelRegistros').oLoader(opciones);
+        $('#panelUsuarios').oLoader(opciones);
     }
     $('#cuerpoUsuarios').on('show.bs.collapse', function () {
         $('#colapsaUsuarios i').removeClass('fa-caret-right').addClass('fa-caret-down');
@@ -452,6 +478,7 @@ $(function(){
     $('#ventanaModal').on('hide.bs.modal', function (e) {
         $('#ventanaModal #cancelarForm').html('Cancelar');
         $('#ventanaModal #guardarRegistro').html('Guardar cambios');
+        $('#ventanaModal #guardarRegistro').show();
         $('#ventanaModal .modal-title').html('');
         $('#ventanaModal .modal-body').html('');
     });
