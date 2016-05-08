@@ -18,6 +18,7 @@ if ($result = $mysqli->query("SELECT * FROM $TABLA_USUARIOS")) {
         if ($row[2] == $numCedula) {
             $idUsuario = $row[0];
             $nombre = $row[1];
+            $empresa = $row[3];
         }
     }
     $result->close();
@@ -45,7 +46,7 @@ if ($result = $mysqli->query("SELECT * FROM $TABLA_REGISTRO")) {
     }
     $result->close();
 }
-$salida = array('nombre' => $nombre, 'cedula' => $numCedula, "cursos" => $curso);
+$salida = array('nombre' => $nombre, 'cedula' => $numCedula, "cursos" => $curso, "empresa" => $empresa);
 echo json_encode($salida);
 $mysqli->close();
 ?>

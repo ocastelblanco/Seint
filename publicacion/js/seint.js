@@ -207,7 +207,7 @@ $(function(){
                 $('#tablaCursos tbody').html('');
                 $.each(datos.cursos, function(num, curso){
                     //$('#tablaCursos tbody').append('<tr><td>'+curso[2]+'</td><td>'+curso[9]+'</td><td>'+curso[6]+'</td></tr>');
-                    $('#tablaCursos tbody').append('<tr><td>'+datos.cedula+'</td><td>'+curso[9]+'</td></tr>');
+                    $('#tablaCursos tbody').append('<tr><td>'+datos.empresa+'</td><td>'+curso[9]+'</td><td>'+datos.cedula+'</td></tr>');
                 });
                 //$('#nombreUsuario').html('Nombre: ' + datos.nombre);
                 //$('#cedulaUsuario').html('Número de cédula: ' + datos.cedula);
