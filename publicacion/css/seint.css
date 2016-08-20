@@ -23,3 +23,7 @@
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
     width: 100%;
 }
+.nav a, .pagination a, .carousel a, .panel-title a, .navbar-header a { cursor: pointer; }
+.noBorde {
+    border: none;
+}
