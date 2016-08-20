@@ -6,3 +6,9 @@ Contraseña: S31nTS4S
 Base de datos:
 
 eb000384_cursos
+
+
+Interfaz administrador:
+
+Usuario: admin
+Clave: S31nt!
