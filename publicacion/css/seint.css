@@ -26,4 +26,5 @@
 .nav a, .pagination a, .carousel a, .panel-title a, .navbar-header a { cursor: pointer; }
 .tabla-datos {
     font-size: 12px;
+    height: 480px;
 }

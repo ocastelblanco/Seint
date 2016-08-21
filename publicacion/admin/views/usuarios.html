@@ -7,23 +7,13 @@
                 Usuarios
             </a>
         </h3>
-        <button id="nuevoUsuario" class="btn btn-default pull-right">
+        <button class="btn btn-default pull-right" ng-click="au.nuevoUsuario()">
             <i class="fa fa-plus-circle"></i>
             Nuevo
         </button>
         <div class="clearfix"></div>
     </div>
     <div class="panel-body" uib-collapse="colapsado">
-        <div class="row">
-            <div class="col-md-8">&nbsp;</div>
-            <div class="col-md-4">
-                <button class="btn btn-block btn-danger">
-                    <i class="fa fa-trash"></i>
-                    Eliminar / editar
-                </button>
-            </div>
-        </div>
-        <br>
         <div ui-grid="au.datosTabla" ui-grid-selection ui-grid-pagination class="tabla-datos"></div>
     </div><!-- /.panel-body -->
 </div><!-- /.panel -->
