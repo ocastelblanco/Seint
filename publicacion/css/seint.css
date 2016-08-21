@@ -24,6 +24,6 @@
     width: 100%;
 }
 .nav a, .pagination a, .carousel a, .panel-title a, .navbar-header a { cursor: pointer; }
-.noBorde {
-    border: none;
+.tabla-datos {
+    font-size: 12px;
 }
