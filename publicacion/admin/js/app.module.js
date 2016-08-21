@@ -47,10 +47,11 @@ seintAdmin.controller('adminUsuarios', ['i18nService', 'cargaDatos', '$scope', '
     var salida = this;
     salida.datosTabla = {
         enableRowSelection: true,
-        enableSelectAll: true,
+        enableSelectAll: false,
+        multiSelect: false,
         enableFiltering: true,
-        selectionRowHeaderWidth: 35,
-        rowHeight: 35,
+        selectionRowHeaderWidth: 24,
+        rowHeight: 24,
         showGridFooter:true,
         paginationPageSizes: [100, 200, 500, 1000, 10000],
         paginationPageSize: 100,
