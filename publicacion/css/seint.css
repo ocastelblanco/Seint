@@ -28,3 +28,15 @@
     font-size: 12px;
     height: 480px;
 }
+.texto-activo {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+.texto-activo a {
+    cursor: pointer;
+    color: #FFF;
+}
+.texto-activo a.active {
+    background: #2c81ba;
+    border-color: #2c81ba;
+}

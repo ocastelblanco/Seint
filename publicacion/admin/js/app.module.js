@@ -216,11 +216,11 @@ seintAdmin.controller('adminCursos', ['i18nService', 'cargaDatos', '$scope', '$u
         };
     }];
 }]);
-seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', '$uibModal', '$timeout', function(i18nService, cargaDatos, $scope, $uibModal, $timeout){
+seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', '$uibModal', function(i18nService, cargaDatos, $scope, $uibModal){
     i18nService.setCurrentLang('es');
     var salida = this;
-    salida.cursos = {};
-    salida.usuarios = {};
+    var usu = {};
+    var cur = {};
     salida.datosTabla = {
         enableRowSelection: true,
         enableSelectAll: false,
@@ -250,36 +250,38 @@ seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', 
     function cargaTabla() {
         cargaDatos.leer('registros').then(function(respReg){
             cargaDatos.leer('usuarios').then(function(respUsu){
+                salida.usuarios = respUsu;
                 cargaDatos.leer('cursos').then(function(respCur){
                     var resp = [];
+                    salida.cursos = respCur;
                     angular.forEach(respUsu, function(valor, llave){
-                        salida.usuarios[valor['id']] = valor['Cedula'];
+                        usu[valor.id] = valor.Cedula+' '+valor.Nombre;
                     });
                     angular.forEach(respCur, function(valor, llave){
-                        salida.cursos[valor['id']] = valor['NombreCurso'];
+                        cur[valor.id] = valor.NombreCurso;
                     });
                     angular.forEach(respReg, function(valor, llave){
                         resp.push({
-                            'id': valor['id'],
-                            'Usuario': salida.usuarios[valor['CodUsuario']],
-                            'Curso': salida.cursos[valor['CodCurso']],
-                            'CodigoCarta': valor['CodigoCarta'],
-                            'NumCert': valor['NumCert'],
-                            'Factura': valor['Factura'],
-                            'Consecutivo': valor['Consecutivo'],
-                            'ServExamen': valor['ServExamen'],
-                            'FechaExp': valor['FechaExp'],
-                            'EjecutivoCuenta': valor['EjecutivoCuenta'],
-                            'FechaReg': valor['FechaReg']
+                            'id': valor.id,
+                            'Usuario': usu[valor.CodUsuario],
+                            'Curso': cur[valor.CodCurso],
+                            'CodUsuario': valor.CodUsuario,
+                            'CodCurso': valor.CodCurso,
+                            'CodigoCarta': valor.CodigoCarta,
+                            'NumCert': valor.NumCert,
+                            'Factura': valor.Factura,
+                            'Consecutivo': valor.Consecutivo,
+                            'ServExamen': valor.ServExamen,
+                            'FechaExp': valor.FechaExp,
+                            'EjecutivoCuenta': valor.EjecutivoCuenta,
+                            'FechaReg': valor.FechaReg
                         });
                     });
-                    $timeout(function(){
-                        salida.datosTabla.data = resp;
-                    },500);
+                    salida.datosTabla.data = resp;
                 });
             });
         });
-    }/*
+    }
     // Captura cuando el usuario selecciona filas de la tabla
     salida.datosTabla.onRegisterApi = function(gridApi){
         $scope.gridApi = gridApi;
@@ -290,14 +292,17 @@ seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', 
     };
     function abreModal() {
         salida.modalInstance = $uibModal.open({
-            templateUrl: 'views/modalCursos.html',
-            controller: modalEditarCursos,
+            templateUrl: 'views/modalRegistros.html',
+            controller: modalEditarRegistros,
             keyboard: false,
             backdrop: 'static'
         });
         salida.modalInstance.result.then(function(accion){
             $scope.gridApi.selection.clearSelectedRows();
-            cargaDatos.datos(accion,'cursos',salida.filasSeleccionadas[0]).then(function(resp){
+            var postDatos = salida.filasSeleccionadas[0];
+            delete postDatos.Usuario;
+            delete postDatos.Curso;
+            cargaDatos.datos(accion,'registros',postDatos).then(function(resp){
                 console.log('Respuesta', resp);
                 cargaTabla();
             }).catch(function(error){
@@ -306,24 +311,46 @@ seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', 
             });
         });
     }
-    var modalEditarCursos = ['$uibModalInstance', '$scope', function($uibModalInstance, $scope){
-        $scope.titulo = "Editar o eliminar curso";
-        $scope.curso = salida.filasSeleccionadas[0];
+    var modalEditarRegistros = ['$uibModalInstance', '$scope', function($uibModalInstance, $scope){
+        $scope.titulo = "Editar o eliminar registro";
+        $scope.cursos = salida.cursos;
+        $scope.registros = salida.filasSeleccionadas[0];
+        $scope.Usuario = $scope.registros.Usuario;
+        $scope.buscaUsuarios = function(item){
+            return cargaDatos.consulta(item).then(function(resp){
+                return resp;
+            });
+        };
         $scope.editando = true;
         $scope.accion = function(accion){
-            $uibModalInstance.close(accion);
+            if (accion != 'cerrar') {
+                $scope.guardando = true;
+                $scope.registros.Usuario = $scope.Usuario;
+                $scope.registros.Curso = cur[$scope.registros.CodCurso];
+                salida.filasSeleccionadas[0] = $scope.registros;
+                angular.forEach(salida.usuarios, function(valor, llave){
+                    var usur = valor.Cedula+' '+valor.Nombre;
+                    if (usur == $scope.Usuario) {
+                        $scope.registros.CodUsuario = valor.id;
+                    }
+                });
+                $uibModalInstance.close(accion);
+            } else {
+                $uibModalInstance.close(accion);
+            }
         };
     }];
-    salida.nuevoCurso = function() {
+    salida.nuevoRegistro = function() {
         salida.modalInstance = $uibModal.open({
-            templateUrl: 'views/modalCursos.html',
-            controller: modalNuevoCurso,
+            templateUrl: 'views/modalRegistros.html',
+            controller: modalNuevoRegistro,
             keyboard: false,
             backdrop: 'static'
         });
         salida.modalInstance.result.then(function(resp){
             $scope.gridApi.selection.clearSelectedRows();
-            cargaDatos.datos(resp[0],'cursos',resp[1]).then(function(resp){
+            delete resp[1].Usuario;
+            cargaDatos.datos(resp[0],'registros',resp[1]).then(function(resp){
                 console.log('Respuesta', resp);
                 cargaTabla();
             }).catch(function(error){
@@ -332,14 +359,30 @@ seintAdmin.controller('adminRegistros', ['i18nService', 'cargaDatos', '$scope', 
             });
         });
     };
-    var modalNuevoCurso = ['$uibModalInstance', '$scope', function($uibModalInstance, $scope){
-        $scope.titulo = "Crear un nuevo curso";
+    var modalNuevoRegistro = ['$uibModalInstance', '$scope', function($uibModalInstance, $scope){
+        $scope.titulo = "Crear un nuevo registro";
+        $scope.cursos = salida.cursos;
         $scope.editando = false;
+        $scope.buscaUsuarios = function(item){
+            return cargaDatos.consulta(item).then(function(resp){
+                return resp;
+            });
+        };
         $scope.accion = function(accion){
-            $uibModalInstance.close([accion, $scope.curso]);
+            if (accion != 'cerrar') {
+                $scope.guardando = true;
+                angular.forEach(salida.usuarios, function(valor, llave){
+                    var usur = valor.Cedula+' '+valor.Nombre;
+                    if (usur == $scope.Usuario) {
+                        $scope.registros.CodUsuario = valor.id;
+                    }
+                });
+                $uibModalInstance.close([accion, $scope.registros]);
+            } else {
+                $uibModalInstance.close([accion, $scope.registros]);
+            }
         };
     }];
-    */
 }]);
 // Servicios
 seintAdmin.service('sesion', ['$http', function($http){
@@ -393,7 +436,26 @@ seintAdmin.service('cargaDatos', ['$http', function($http){
                 return resp.data;
             });
             return promesa;
+        },
+        consulta: function(item) {
+            var promesa = $http.post('php/consulta.php?item='+item).then(function(resp){
+                return resp.data;
+            });
+            return promesa;
         }
     };
     return cargaDatos;
+}]);
+seintAdmin.directive('selectOnClick', ['$window', function($window) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            element.on('click', function() {
+                if (!$window.getSelection().toString()) {
+                    // Required for mobile Safari
+                    this.setSelectionRange(0, this.value.length)
+                }
+            });
+        }
+    };
 }]);
