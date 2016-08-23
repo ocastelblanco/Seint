@@ -1,7 +1,7 @@
 {
   "name": "SEINT",
   "author": "Oliver Castelblanco",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Sistema de registro y búsqueda de participantes en cursos de capacitación.",
   "dependencies": {
     "angular": "^1.5.7",
