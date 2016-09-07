@@ -1,0 +1,78 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="accion('cerrar')"><span aria-hidden="true">&times;</span></button>
+    <h3 class="modal-title">{{titulo}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="CodigoCarta" class="col-sm-4 control-label">Código de carta</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="CodigoCarta" placeholder="Código de carta" ng-model="registros.CodigoCarta">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="NumCert" class="col-sm-4 control-label">Número QR</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="NumCert" placeholder="Número de serie consecutivo QR" ng-model="registros.NumCert">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Factura" class="col-sm-4 control-label">Factura</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="Factura" placeholder="Factura" ng-model="registros.Factura">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Consecutivo" class="col-sm-4 control-label">Consecutivo</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="Consecutivo" placeholder="Consecutivo operaciones" ng-model="registros.Consecutivo">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ServExamen" class="col-sm-4 control-label">Examen</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="ServExamen" placeholder="Servicio de examen" ng-model="registros.ServExamen">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="CodUsuario" class="col-sm-4 control-label">Usuario</label>
+            <div class="col-sm-8" ng-class="{'input-group':editando, 'texto-activo': editando}">
+                <a class="input-group-addon" ng-model="noUsuario" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" ng-show="editando">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <input type="text" class="form-control" id="CodUsuario" ng-model="Usuario" uib-typeahead="usuario.Usuario for usuario in buscaUsuarios($viewValue)" ng-disabled="noUsuario && editando" ng-init="noUsuario = true" select-on-click autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="CodCurso" class="col-sm-4 control-label">Curso</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="CodCurso" ng-model="registros.CodCurso">
+                    <option value="{{curso.id}}" label="{{curso.NombreCurso}}" ng-repeat="curso in cursos track by curso.id" ng-selected="curso.id == registros.CodCurso">{{curso.NombreCurso}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="FechaExp" class="col-sm-4 control-label">Fecha de expedición</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="FechaExp" placeholder="Fecha de expedición" ng-model="registros.FechaExp">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="EjecutivoCuenta" class="col-sm-4 control-label">Ejecutivo</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="EjecutivoCuenta" placeholder="Ejecutivo de cuenta" ng-model="registros.EjecutivoCuenta">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger pull-left" ng-click="accion('eliminar')" ng-show="editando">
+        <i class="fa fa-trash"></i>
+        Eliminar
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="accion('guardar')" ng-disabled="guardando">
+        <span ng-hide="guardando"><i class="fa fa-floppy-o"></i> Guardar</span>
+        <span ng-show="guardando"><i class="fa fa-spinner fa-spin fa-lg fa-fw"></i> Guardando...</span>
+    </button>
+    <button type="button" class="btn btn-default" ng-click="accion('cerrar')">Cancelar</button>
+</div>

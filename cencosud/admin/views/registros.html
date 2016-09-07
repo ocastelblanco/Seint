@@ -1,0 +1,19 @@
+<div class="panel panel-primary filaAdmin" ng-init="colapsado = false" ng-controller="adminRegistros as ar">
+    <div class="panel-heading">
+        <h3 class="panel-title pull-left">
+            <a ng-click="colapsado = !colapsado">
+                <i class="fa fa-caret-right" ng-show="colapsado"></i>
+                <i class="fa fa-caret-down" ng-hide="colapsado"></i>
+                Cursos
+            </a>
+        </h3>
+        <button class="btn btn-default pull-right" ng-click="ar.nuevoRegistro()">
+            <i class="fa fa-plus-circle"></i>
+            Nuevo
+        </button>
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body" uib-collapse="colapsado">
+        <div ui-grid="ar.datosTabla" ui-grid-selection ui-grid-pagination class="tabla-datos"></div>
+    </div><!-- /.panel-body -->
+</div><!-- /.panel -->

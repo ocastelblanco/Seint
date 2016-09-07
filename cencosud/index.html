@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Seint S.A.S.</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/flat-ui.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/watable.css">
+        <link rel="stylesheet" href="css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="css/seint.css">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body style="display:none;">
+        <div class="container">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#barra-colapsible" aria-expanded="false">
+                            <span class="sr-only">Activar navegación</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">CENCOSUD</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="barra-colapsible">
+                        <p class="navbar-text navbar-left">Sistema de seguimiento de cursos SEINT</p>
+                        <a class="btn btn-success navbar-btn navbar-right" href="admin/">
+                            <i class="fa fa-sign-in"></i> Ingreso
+                        </a>
+                    </div>
+
+                </div>
+            </nav>
+            <div class="row filaUsuarios">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ingrese su número de cédula</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form id="ingresaCedula">
+                                <div class="form-group">
+                                    <label for="numCedula">Sin puntos o espacios en blanco</label>
+                                    <input type="number" class="form-control" id="numCedula" placeholder="Número de cédula">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="alert alert-danger noResultados" role="alert">Su número de cédula no aparece en nuestros registros. Intente de nuevo.</div>
+                    <div class="panel panel-primary resultadoCursos">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Cursos registrados</h3>
+                        </div>
+                        <div class="panel-body">
+                            <!--h3 id="nombreUsuario"></h3-->
+                            <!--h3 id="cedulaUsuario"></h3-->
+                            <table id="tablaCursos" class="table table-bordered">
+                                <thead>
+                                    <!--th>Empresa</th-->
+                                    <th>Curso - Nivel</th>
+                                    <th>Número de cédula</th>
+                                    <!--th>Fecha</th-->
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--div class="row filaAdmin">
+                <div class="col-md-8">
+                    <div id="panelUsuarios" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">
+                                <a id="colapsaUsuarios" role="button" data-toggle="collapse" href="#cuerpoUsuarios" aria-expanded="true" aria-controls="cuerpoUsuarios">
+                                    <i class="fa fa-caret-right"></i> Usuarios
+                                </a>
+                            </h3>
+                            <button id="nuevoUsuario" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="cuerpoUsuarios" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div id="tablaUsuarios"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div id="panelCursos" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">
+                                <a id="colapsaCursos" role="button" data-toggle="collapse" href="#cuerpoCursos" aria-expanded="true" aria-controls="cuerpoCursos">
+                                    <i class="fa fa-caret-right"></i> Cursos
+                                </a>
+                            </h3>
+                            <button id="nuevoCurso" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="cuerpoCursos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div id="tablaCurs"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row.filaAdmin -->
+            <!--div class="row filaAdmin">
+                <div class="col-xs-12">
+                    <div id="panelRegistros" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title pull-left">Registros</h3>
+                            <button id="nuevoRegistro" class="btn btn-default pull-right"><i class="fa fa-plus-circle"></i> Nuevo</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="tablaRegistros"></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.row.filaAdmin -->
+        <!--/div>
+        <!-- Ventana Modal -->
+        <!--div class="modal fade" id="ventanaModal" tabindex="-1" role="dialog" aria-labelledby="ventanaModalLabel">
+            <div class="modal-dialog" role="form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="cancelarForm" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="guardarRegistro" type="button" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            <!--/div><!-- /.modal-dialog -->
+        <!--/div><!-- /.modal -->
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/moment-with-locales.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="js/bootstrap-datetimepicker.min.js"></script>
+        <script src="js/jquery.watable.js"></script>
+        <script src="js/bootstrap-select.min.js"></script>
+        <script src="js/flat-ui.js"></script>
+        <script src="js/jquery.oLoader.min.js"></script>
+        <script src="js/seint.js"></script>
+    </body>
+</html>

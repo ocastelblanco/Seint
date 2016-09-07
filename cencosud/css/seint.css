@@ -1,0 +1,42 @@
+#tablaCursos th:nth-of-type(1) {
+    width: 30%
+}
+#tablaCursos th:nth-of-type(2) {
+    width: 50%
+}
+#tablaCursos th:nth-of-type(3) {
+    width: 20%
+}
+#tablaRegistros,
+#tablaUsuarios,
+#tablaCurs {
+    overflow: scroll;
+}
+.filaAdmin .panel-heading h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: normal;
+    width: 60%;
+    padding-top: 8px;
+}
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 100%;
+}
+.nav a, .pagination a, .carousel a, .panel-title a, .navbar-header a { cursor: pointer; }
+.tabla-datos {
+    font-size: 12px;
+    height: 480px;
+}
+.texto-activo {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+.texto-activo a {
+    cursor: pointer;
+    color: #FFF;
+}
+.texto-activo a.active {
+    background: #2c81ba;
+    border-color: #2c81ba;
+}
